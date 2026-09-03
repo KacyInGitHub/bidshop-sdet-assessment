@@ -2,7 +2,7 @@ import { AuthApi, RegisterRequest, AuthResponse } from "../api/authApi";
 import { PurchaseContext } from "../context/purchaseContext";
 import { generateUniqueEmail } from "../factories/userFactory";
 
-export class AuthScene {
+export class RegisterUserScene {
     constructor( private readonly authApi: AuthApi) {}
 
     async registerUser( context: PurchaseContext): Promise<AuthResponse> {

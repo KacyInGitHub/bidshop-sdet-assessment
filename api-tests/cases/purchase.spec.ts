@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 import { AuthApi } from '../api/authApi';
-import { AuthScene } from '../scenes/authScene';
+import { ProductsApi } from '../api/productsApi';
+import { RegisterUserScene } from '../scenes/registerUserScene';
+import { FindAvailableProductScene } from '../scenes/findAvailableProductScene';
 import { createPurchaseContext } from '../context/purchaseContext';
 import { purchaseFlowData } from '../data/purchaseFlowData';
 
@@ -12,9 +14,9 @@ test(
 
     const authApi = new AuthApi(request);
 
-    const authScene = new AuthScene(authApi);
+    const registerUserScene = new RegisterUserScene(authApi);
 
-    const registeredUser = await authScene.registerUser(context);
+    const registeredUser = await registerUserScene.registerUser(context);
 
     expect(registeredUser.token).toBeTruthy();
 
@@ -23,5 +25,20 @@ test(
     expect(registeredUser.user.email).toBe(context.user.email);
 
     expect(registeredUser.user.name).toBe(context.user.name);
+
+    const productsApi = new ProductsApi(request);
+
+    const findAvailableProductScene = new FindAvailableProductScene(productsApi);
+
+    await findAvailableProductScene.findAvailableProduct(context);
+    
+    expect(context.product.id).toBeTruthy();
+
+    expect(context.product.name).toBeTruthy();
+
+    expect(context.product.price).toBeGreaterThan(0);
+
+    expect(context.product.originalStock).toBeGreaterThanOrEqual(context.product.quantity);
+
   }
 );
