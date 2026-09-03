@@ -27,8 +27,7 @@ export class FindAvailableProductScene {
       );
     }
 
-    const body =
-      await response.json() as ProductList;
+    const body = await response.json() as ProductList;
 
     const product = body.items.find(
       item => item.stock >= context.product.quantity

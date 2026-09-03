@@ -1,0 +1,41 @@
+import {
+  OrdersApi,
+  Order
+} from '../api/ordersApi';
+
+import {
+  PurchaseContext
+} from '../context/purchaseContext';
+
+export class GetOrderScene {
+  constructor(
+    private readonly ordersApi: OrdersApi
+  ) {}
+
+  async getOrder(
+    context: PurchaseContext
+  ): Promise<Order> {
+
+    if (!context.user.token) {
+      throw new Error(
+        'User token is missing from purchase context'
+      );
+    }
+
+    if (!context.order.id) {
+      throw new Error(
+        'Order ID is missing from purchase context'
+      );
+    }
+
+    const response = await this.ordersApi.getOrderById(context.user.token, context.order.id);
+
+    if (response.status() !== 200) {
+      throw new Error(
+        `Failed to get order. Status: ${response.status()}`
+      );
+    }
+
+    return await response.json() as Order;
+  }
+}
