@@ -1,0 +1,22 @@
+# Node / TypeScript
+node_modules/
+api-tests/node_modules/
+dist/
+
+# Python
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+
+# Playwright
+playwright-report/
+test-results/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Environment
+.env
