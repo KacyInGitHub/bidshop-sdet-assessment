@@ -89,7 +89,7 @@ test(
 
     const expectedTotal = Number((expectedSubtotal + expectedGst).toFixed(2));
 
-    //expect(cart.gst).toBeCloseTo(expectedGst, 2); // failed
+    //expect(cart.gst).toBeCloseTo(expectedGst, 2); // failed, gst in openapi(0.15) not match source code(0.125)
 
     // expect(cart.total).toBeCloseTo(expectedTotal, 2); // failed
 
