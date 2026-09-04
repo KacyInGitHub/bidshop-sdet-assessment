@@ -16,8 +16,12 @@ import {
 import {
   generateUniqueEmail
 } from '../factories/userFactory';
+import { Scene } from './scene';
 
-export class RegisterUserScene {
+export class RegisterUserScene implements Scene{
+  static readonly key = 'registerUser';
+  static readonly api = 'auth';
+
   constructor(
     private readonly authApi: AuthApi,
 

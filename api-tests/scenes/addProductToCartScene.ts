@@ -1,24 +1,16 @@
-import {
-  CartApi,
-  AddCartItemRequest,
-  Cart
-} from '../api/cartApi';
+import { CartApi, AddCartItemRequest, Cart } from '../api/cartApi';
 
-import {
-  Product
-} from '../api/productsApi';
+import { Product } from '../api/productsApi';
 
-import {
-  TestContext,
-  getDynamicData,
-  setDynamicData
-} from '../context/testContext';
+import {TestContext, getDynamicData, setDynamicData } from '../context/testContext';
 
-import {
-  PurchaseFlowData
-} from '../data/purchaseFlowData';
+import { PurchaseFlowData } from '../data/purchaseFlowData';
+import { Scene } from './scene';
 
-export class AddProductToCartScene {
+export class AddProductToCartScene implements Scene{
+  static readonly key = 'addProductToCart';
+  static readonly api = 'cart';
+  
   constructor(
     private readonly cartApi: CartApi,
     private readonly context: TestContext<PurchaseFlowData>

@@ -1,33 +1,24 @@
-import { test } from '../fixtures/purchaseFixture';
+import { test } from '../fixtures/testFixture';
 
 
 test(
   'customer can complete a purchase',
-  async ({
-    registerUser,
-    findAvailableProduct,
-    addProductToCart,
-    placeOrder,
-    getCart,
-    getProduct,
-    getOrder,
-    verifyRegisteredUser
-  }) => {
+  async ({ scenes }) => {
 
-    await registerUser.run();
+    await scenes.registerUser.run();
 
-    await verifyRegisteredUser.run();
+    await scenes.verifyRegisteredUser.run();
 
-    await findAvailableProduct.run();
+    await scenes.findAvailableProduct.run();
 
-    await addProductToCart.run();
+    await scenes.addProductToCart.run();
 
-    await placeOrder.run();
+    await scenes.placeOrder.run();
 
-    await getCart.run();
+    await scenes.getCart.run();
 
-    await getProduct.run();
+    await scenes.getProduct.run();
 
-    await getOrder.run();
+    await scenes.getOrder.run();
   }
 );

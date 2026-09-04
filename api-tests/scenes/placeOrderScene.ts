@@ -13,8 +13,12 @@ import {
 import {
   PurchaseFlowData
 } from '../data/purchaseFlowData';
+import { Scene } from './scene';
 
-export class PlaceOrderScene {
+export class PlaceOrderScene implements Scene{
+  static readonly key = 'placeOrder';
+  static readonly api = 'orders';
+
   constructor(
     private readonly ordersApi: OrdersApi,
 

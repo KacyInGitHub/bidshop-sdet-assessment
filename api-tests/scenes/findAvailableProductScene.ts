@@ -11,8 +11,12 @@ import {
 import {
   PurchaseFlowData
 } from '../data/purchaseFlowData';
+import { Scene } from './scene';
 
-export class FindAvailableProductScene {
+export class FindAvailableProductScene implements Scene{
+  static readonly key = 'findAvailableProduct';
+  static readonly api = 'products';
+
   constructor(
     private readonly productsApi: ProductsApi,
 
