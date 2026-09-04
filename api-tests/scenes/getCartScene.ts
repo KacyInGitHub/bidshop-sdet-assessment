@@ -9,20 +9,21 @@ import {
 
 export class GetCartScene {
   constructor(
-    private readonly cartApi: CartApi
+    private readonly cartApi: CartApi,
+    private readonly context: TestContext
   ) {}
 
-  async getCart(
-    context: TestContext
-  ): Promise<Cart> {
+  async run(): Promise<void> {
+    const token = this.context.user.token;
 
-    if (!context.user.token) {
+    if (!token) {
       throw new Error(
-        'User token is missing from purchase context'
+        'User token is missing from test context'
       );
     }
 
-    const response = await this.cartApi.getCart(context.user.token);
+    const response =
+      await this.cartApi.getCart(token);
 
     if (response.status() !== 200) {
       throw new Error(
@@ -30,6 +31,7 @@ export class GetCartScene {
       );
     }
 
-    return await response.json() as Cart;
+    this.context.cart.latest =
+      await response.json() as Cart;
   }
 }

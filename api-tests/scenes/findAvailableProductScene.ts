@@ -9,12 +9,11 @@ import {
 
 export class FindAvailableProductScene {
   constructor(
-    private readonly productsApi: ProductsApi
+    private readonly productsApi: ProductsApi,
+    private readonly context: TestContext
   ) {}
 
-  async findAvailableProduct(
-    context: TestContext
-  ): Promise<void> {
+  async run(): Promise<void> {
 
     const response =
       await this.productsApi.getProducts({
@@ -27,21 +26,32 @@ export class FindAvailableProductScene {
       );
     }
 
-    const body = await response.json() as ProductList;
+    const body =
+      await response.json() as ProductList;
 
-    const product = body.items.find(
-      item => item.stock >= context.product.quantity
-    );
+    const product =
+      body.items.find(
+        item =>
+          item.stock >=
+          this.context.product.quantity
+      );
 
     if (!product) {
       throw new Error(
-        `No product has enough stock for quantity ${context.product.quantity}`
+        `No product has enough stock for quantity ${this.context.product.quantity}`
       );
     }
 
-    context.product.id = product.id;
-    context.product.name = product.name;
-    context.product.price = product.price;
-    context.product.originalStock = product.stock;
+    this.context.product.id =
+      product.id;
+
+    this.context.product.name =
+      product.name;
+
+    this.context.product.price =
+      product.price;
+
+    this.context.product.originalStock =
+      product.stock;
   }
 }

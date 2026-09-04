@@ -9,26 +9,34 @@ import {
 
 export class GetOrderScene {
   constructor(
-    private readonly ordersApi: OrdersApi
+    private readonly ordersApi: OrdersApi,
+    private readonly context: TestContext
   ) {}
 
-  async getOrder(
-    context: TestContext
-  ): Promise<Order> {
+  async run(): Promise<void> {
+    const token =
+      this.context.user.token;
 
-    if (!context.user.token) {
+    const orderId =
+      this.context.order.id;
+
+    if (!token) {
       throw new Error(
-        'User token is missing from purchase context'
+        'User token is missing from test context'
       );
     }
 
-    if (!context.order.id) {
+    if (!orderId) {
       throw new Error(
-        'Order ID is missing from purchase context'
+        'Order ID is missing from test context'
       );
     }
 
-    const response = await this.ordersApi.getOrderById(context.user.token, context.order.id);
+    const response =
+      await this.ordersApi.getOrderById(
+        token,
+        orderId
+      );
 
     if (response.status() !== 200) {
       throw new Error(
@@ -36,6 +44,7 @@ export class GetOrderScene {
       );
     }
 
-    return await response.json() as Order;
+    this.context.order.latest =
+      await response.json() as Order;
   }
 }

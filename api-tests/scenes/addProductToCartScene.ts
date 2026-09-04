@@ -11,32 +11,32 @@ import {
 
 export class AddProductToCartScene {
   constructor(
-    private readonly cartApi: CartApi
+    private readonly cartApi: CartApi,
+    private readonly context: TestContext
   ) {}
 
-  async run(
-    context: TestContext
-  ): Promise<void> {
-
-    if (!context.user.token) {
+  async run(): Promise<void> {
+    if (!this.context.user.token) {
       throw new Error(
-        'User token is missing from purchase context'
+        'User token is missing from test context'
       );
     }
 
-    if (!context.product.id) {
+    if (!this.context.product.id) {
       throw new Error(
-        'Product ID is missing from purchase context'
+        'Product ID is missing from test context'
       );
     }
+
+    const requestBody: AddCartItemRequest = {
+      productId: this.context.product.id,
+      quantity: this.context.product.quantity
+    };
 
     const response =
       await this.cartApi.addItem(
-        context.user.token,
-        {
-          productId: context.product.id,
-          quantity: context.product.quantity
-        }
+        this.context.user.token,
+        requestBody
       );
 
     if (response.status() !== 201) {
@@ -45,7 +45,7 @@ export class AddProductToCartScene {
       );
     }
 
-    context.cart.latest =
+    this.context.cart.latest =
       await response.json() as Cart;
   }
 }

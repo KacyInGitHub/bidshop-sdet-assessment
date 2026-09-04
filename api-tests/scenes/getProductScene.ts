@@ -9,20 +9,24 @@ import {
 
 export class GetProductScene {
   constructor(
-    private readonly productsApi: ProductsApi
+    private readonly productsApi: ProductsApi,
+    private readonly context: TestContext
   ) {}
 
-  async getSelectedProduct(
-    context: TestContext
-  ): Promise<Product> {
+  async run(): Promise<void> {
+    const productId =
+      this.context.product.id;
 
-    if (!context.product.id) {
+    if (!productId) {
       throw new Error(
-        'Product ID is missing from purchase context'
+        'Product ID is missing from test context'
       );
     }
 
-    const response = await this.productsApi.getProductById(context.product.id);
+    const response =
+      await this.productsApi.getProductById(
+        productId
+      );
 
     if (response.status() !== 200) {
       throw new Error(
@@ -30,6 +34,7 @@ export class GetProductScene {
       );
     }
 
-    return await response.json() as Product;
+    this.context.product.latest =
+      await response.json() as Product;
   }
 }

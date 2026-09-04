@@ -5,41 +5,57 @@ import {
 } from '../api/ordersApi';
 
 import {
-  PurchaseContext
+  TestContext
 } from '../context/testContext';
 
 export class PlaceOrderScene {
   constructor(
-    private readonly ordersApi: OrdersApi
+    private readonly ordersApi: OrdersApi,
+    private readonly context: TestContext
   ) {}
 
-  async placeOrder(
-    context: PurchaseContext
-  ): Promise<Order> {
+  async run(): Promise<void> {
+    const token =
+      this.context.user.token;
 
-    if (!context.user.token) {
+    const email =
+      this.context.user.email;
+
+    if (!token) {
       throw new Error(
-        'User token is missing from purchase context'
+        'User token is missing from test context'
       );
     }
 
-    if (!context.user.email) {
+    if (!email) {
       throw new Error(
-        'User email is missing from purchase context'
+        'User email is missing from test context'
       );
     }
 
     const requestBody: CreateOrderRequest = {
       customer: {
-        name: context.order.customer.name,
-        email: context.user.email,
-        address: context.order.customer.address,
-        city: context.order.customer.city,
-        postcode: context.order.customer.postcode
+        name:
+          this.context.order.customer.name,
+
+        email,
+
+        address:
+          this.context.order.customer.address,
+
+        city:
+          this.context.order.customer.city,
+
+        postcode:
+          this.context.order.customer.postcode
       }
     };
 
-    const response = await this.ordersApi.createOrder(context.user.token,requestBody);
+    const response =
+      await this.ordersApi.createOrder(
+        token,
+        requestBody
+      );
 
     if (response.status() !== 201) {
       throw new Error(
@@ -47,11 +63,16 @@ export class PlaceOrderScene {
       );
     }
 
-    const body = await response.json() as Order;
+    const body =
+      await response.json() as Order;
 
-    context.order.id = body.id;
-    context.order.customer.email = body.customer.email;
+    this.context.order.id =
+      body.id;
 
-    return body;
+    this.context.order.latest =
+      body;
+
+    this.context.order.customer.email =
+      body.customer.email;
   }
 }
