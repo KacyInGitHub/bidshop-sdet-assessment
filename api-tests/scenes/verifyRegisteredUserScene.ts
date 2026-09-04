@@ -18,6 +18,6 @@ export class VerifyRegisteredUserScene implements Scene{
     expect(getDynamicData(this.context, 'user.email')).toBeTruthy();
     
     // TODO... No hard code
-    expect(this.context.staticData.user.name).toBe('E2E Test User'); 
+    expect(getDynamicData(this.context, 'user.name')).toBe(this.context.staticData.user.name); 
   }
 }

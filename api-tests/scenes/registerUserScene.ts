@@ -52,6 +52,7 @@ export class RegisterUserScene implements Scene{
 
     setDynamicData(this.context, 'user.id', body.user.id);
     setDynamicData(this.context, 'user.email', body.user.email);
+    setDynamicData(this.context, 'user.name', body.user.name);
     setDynamicData(this.context, 'user.token', body.token);
     setDynamicData(this.context, 'user.registered', body.user);
   }
