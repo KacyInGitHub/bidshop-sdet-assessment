@@ -1,4 +1,4 @@
-import { test } from '../fixtures/testFixture';
+import { test } from '../fixtures/apiFixture';
 
 
 test(

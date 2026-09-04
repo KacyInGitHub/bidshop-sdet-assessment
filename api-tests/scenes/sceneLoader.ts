@@ -1,10 +1,10 @@
 import { TestContext } from '../context/testContext';
-import { ApiRegistry } from './apiRegistry';
-import { Scene, SceneClass } from '../scenes/scene';
+import { ApiRegistry } from '../api/apiRegistry';
+import { Scene, SceneClass } from './scene';
 
 export type SceneRegistry = Record<string, Scene>;
 
-export function createScenes(sceneClasses: SceneClass[], apiRegistry: ApiRegistry, context: TestContext<any>): SceneRegistry {
+export function createScenes(sceneClasses: readonly SceneClass[], apiRegistry: ApiRegistry, context: TestContext<any>): SceneRegistry {
   const scenes: SceneRegistry = {};
 
   for (const SceneClass of sceneClasses) {

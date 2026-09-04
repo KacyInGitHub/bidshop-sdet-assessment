@@ -1,9 +1,9 @@
 import { APIRequestContext } from '@playwright/test';
 
-import { AuthApi } from '../api/authApi';
-import { ProductsApi } from '../api/productsApi';
-import { CartApi } from '../api/cartApi';
-import { OrdersApi } from '../api/ordersApi';
+import { AuthApi } from './authApi';
+import { ProductsApi } from './productsApi';
+import { CartApi } from './cartApi';
+import { OrdersApi } from './ordersApi';
 
 export function createApiRegistry(request: APIRequestContext) {
   return {
