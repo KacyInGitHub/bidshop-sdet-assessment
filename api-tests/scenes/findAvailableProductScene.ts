@@ -4,7 +4,7 @@ import { Scene } from './scene';
 
 export class FindAvailableProductScene implements Scene{
   static readonly key = 'findAvailableProduct';
-  static readonly api = 'products';
+  static readonly api = ['products'] as const;
 
   constructor(
     private readonly productsApi: ProductsApi,

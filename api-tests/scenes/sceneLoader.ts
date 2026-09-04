@@ -2,9 +2,14 @@ import { TestContext } from '../context/testContext';
 import { ApiRegistry } from '../api/apiRegistry';
 import { Scene, SceneClass } from './scene';
 
-export type SceneRegistry = Record<string, Scene>;
+export type SceneRegistry =
+  Record<string, Scene>;
 
-export function createScenes(sceneClasses: readonly SceneClass[], apiRegistry: ApiRegistry, context: TestContext): SceneRegistry {
+export function createScenes(
+  sceneClasses: readonly SceneClass[],
+  apiRegistry: ApiRegistry,
+  context: TestContext
+): SceneRegistry {
   const scenes: SceneRegistry = {};
 
   for (const SceneClass of sceneClasses) {
@@ -16,10 +21,24 @@ export function createScenes(sceneClasses: readonly SceneClass[], apiRegistry: A
       );
     }
 
-    const apiKey = SceneClass.api;
+    const apiKeys =
+      SceneClass.apis ?? [];
 
-    if (apiKey) {
-      const api = apiRegistry[apiKey as keyof ApiRegistry];
+    if (apiKeys.length === 0) {
+      scenes[key] =
+        new SceneClass(context);
+
+      continue;
+    }
+
+    const apiDependencies:
+      Record<string, unknown> = {};
+
+    for (const apiKey of apiKeys) {
+      const api =
+        apiRegistry[
+          apiKey as keyof ApiRegistry
+        ];
 
       if (!api) {
         throw new Error(
@@ -27,10 +46,15 @@ export function createScenes(sceneClasses: readonly SceneClass[], apiRegistry: A
         );
       }
 
-      scenes[key] = new SceneClass(api, context);
-    } else {
-      scenes[key] = new SceneClass(context);
+      apiDependencies[apiKey] =
+        api;
     }
+
+    scenes[key] =
+      new SceneClass(
+        apiDependencies,
+        context
+      );
   }
 
   return scenes;

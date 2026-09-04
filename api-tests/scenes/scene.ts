@@ -4,7 +4,7 @@ export interface Scene {
 
 export interface SceneClass {
   readonly key: string;
-  readonly api?: string;
+  readonly apis?: readonly string[];
 
   new (...args: any[]): Scene;
 }

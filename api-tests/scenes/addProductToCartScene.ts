@@ -5,7 +5,7 @@ import { Scene } from './scene';
 
 export class AddProductToCartScene implements Scene{
   static readonly key = 'addProductToCart';
-  static readonly api = 'cart';
+  static readonly api = ['cart'] as const;
   
   constructor(
     private readonly cartApi: CartApi,

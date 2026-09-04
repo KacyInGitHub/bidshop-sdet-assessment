@@ -5,7 +5,7 @@ import { Scene } from './scene';
 
 export class RegisterUserScene implements Scene{
   static readonly key = 'registerUser';
-  static readonly api = 'auth';
+  static readonly api = ['auth'] as const
 
   constructor(
     private readonly authApi: AuthApi,

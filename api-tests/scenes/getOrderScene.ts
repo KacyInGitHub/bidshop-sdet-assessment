@@ -6,7 +6,7 @@ import { Scene } from './scene';
 
 export class GetOrderScene implements Scene{
   static readonly key = 'getOrder';
-  static readonly api = 'orders';
+  static readonly api = ['orders'] as const;
   constructor(
     private readonly ordersApi: OrdersApi,
     private readonly context: TestContext

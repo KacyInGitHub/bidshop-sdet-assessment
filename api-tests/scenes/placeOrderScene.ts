@@ -10,7 +10,7 @@ import { Scene } from './scene';
 
 export class PlaceOrderScene implements Scene{
   static readonly key = 'placeOrder';
-  static readonly api = 'orders';
+  static readonly api = ['orders'] as const;
 
   constructor(
     private readonly ordersApi: OrdersApi,

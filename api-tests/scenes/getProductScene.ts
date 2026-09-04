@@ -13,7 +13,7 @@ import { Scene } from './scene';
 
 export class GetProductScene implements Scene{
   static readonly key = 'getProduct';
-  static readonly api = 'products';
+  static readonly api = ['products'] as const;
 
   constructor(
     private readonly productsApi: ProductsApi,
