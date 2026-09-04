@@ -1,10 +1,6 @@
 import { CartApi, AddCartItemRequest, Cart } from '../api/cartApi';
-
 import { Product } from '../api/productsApi';
-
-import {TestContext, getDynamicData, setDynamicData } from '../context/testContext';
-
-import { PurchaseFlowData } from '../data/purchaseFlowData';
+import {TestContext, getDynamicData, setDynamicData, getStaticData } from '../context/testContext';
 import { Scene } from './scene';
 
 export class AddProductToCartScene implements Scene{
@@ -13,7 +9,7 @@ export class AddProductToCartScene implements Scene{
   
   constructor(
     private readonly cartApi: CartApi,
-    private readonly context: TestContext<PurchaseFlowData>
+    private readonly context: TestContext
   ) {}
 
   async run(): Promise<void> {
@@ -23,7 +19,7 @@ export class AddProductToCartScene implements Scene{
 
     const requestBody: AddCartItemRequest = {
       productId: product.id,
-      quantity: this.context.staticData.product.quantity
+      quantity: getStaticData<number>(this.context, 'product.quantity')
     };
 
     const response = await this.cartApi.addItem(token, requestBody);

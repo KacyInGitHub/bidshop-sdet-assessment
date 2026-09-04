@@ -1,21 +1,6 @@
-import {
-  AuthApi,
-  RegisterRequest,
-  AuthResponse
-} from '../api/authApi';
-
-import {
-  TestContext,
-  setDynamicData
-} from '../context/testContext';
-
-import {
-  PurchaseFlowData
-} from '../data/purchaseFlowData';
-
-import {
-  generateUniqueEmail
-} from '../factories/userFactory';
+import { AuthApi, RegisterRequest, AuthResponse } from '../api/authApi';
+import { TestContext,setDynamicData, getStaticData } from '../context/testContext';
+import { generateUniqueEmail } from '../factories/userFactory';
 import { Scene } from './scene';
 
 export class RegisterUserScene implements Scene{
@@ -24,22 +9,38 @@ export class RegisterUserScene implements Scene{
 
   constructor(
     private readonly authApi: AuthApi,
-
-    private readonly context: TestContext<PurchaseFlowData>
+    private readonly context: TestContext
   ) {}
 
   async run(): Promise<void> {
+    const name =
+      getStaticData<string>(
+        this.context,
+        'user.name'
+      );
+
+    const password =
+      getStaticData<string>(
+        this.context,
+        'user.password'
+      );
+
     const email = generateUniqueEmail();
 
     const requestBody:
       RegisterRequest = {
-      email,
-      password: this.context.staticData.user.password,
-      name: this.context.staticData.user.name
-    };
+        email,
+        password,
+        name
+      };
 
-    const response =
-      await this.authApi.register(requestBody);
+    setDynamicData(
+      this.context,
+      'user.email',
+      email
+    );
+
+    const response = await this.authApi.register(requestBody);
 
     if (response.status() !== 201) {
       throw new Error(
@@ -47,13 +48,18 @@ export class RegisterUserScene implements Scene{
       );
     }
 
-    const body =
-      await response.json() as AuthResponse;
+    const body = await response.json() as AuthResponse;
 
-    setDynamicData(this.context, 'user.id', body.user.id);
-    setDynamicData(this.context, 'user.email', body.user.email);
-    setDynamicData(this.context, 'user.name', body.user.name);
-    setDynamicData(this.context, 'user.token', body.token);
-    setDynamicData(this.context, 'user.registered', body.user);
+    setDynamicData(
+      this.context,
+      'user.token',
+      body.token
+    );
+
+    setDynamicData(
+      this.context,
+      'user.registered',
+      body.user
+    );
   }
 }

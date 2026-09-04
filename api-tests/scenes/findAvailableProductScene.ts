@@ -1,16 +1,5 @@
-import {
-  ProductsApi,
-  ProductList
-} from '../api/productsApi';
-
-import {
-  TestContext,
-  setDynamicData
-} from '../context/testContext';
-
-import {
-  PurchaseFlowData
-} from '../data/purchaseFlowData';
+import { ProductsApi, ProductList } from '../api/productsApi';
+import { TestContext, setDynamicData, getStaticData } from '../context/testContext';
 import { Scene } from './scene';
 
 export class FindAvailableProductScene implements Scene{
@@ -20,7 +9,7 @@ export class FindAvailableProductScene implements Scene{
   constructor(
     private readonly productsApi: ProductsApi,
 
-    private readonly context: TestContext<PurchaseFlowData>
+    private readonly context: TestContext
   ) {}
 
   async run(): Promise<void> {
@@ -34,7 +23,7 @@ export class FindAvailableProductScene implements Scene{
 
     const body = await response.json() as ProductList;
 
-    const quantity = this.context.staticData.product.quantity;
+    const quantity = getStaticData<number>(this.context, 'product.quantity');
 
     const product = body.items.find(item => item.stock >= quantity);
 

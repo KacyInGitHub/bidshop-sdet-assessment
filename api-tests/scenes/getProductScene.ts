@@ -9,9 +9,6 @@ import {
   setDynamicData
 } from '../context/testContext';
 
-import {
-  PurchaseFlowData
-} from '../data/purchaseFlowData';
 import { Scene } from './scene';
 
 export class GetProductScene implements Scene{
@@ -20,7 +17,7 @@ export class GetProductScene implements Scene{
 
   constructor(
     private readonly productsApi: ProductsApi,
-    private readonly context: TestContext<PurchaseFlowData>
+    private readonly context: TestContext
   ) {}
 
   async run(): Promise<void> {

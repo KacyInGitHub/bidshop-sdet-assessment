@@ -1,5 +1,7 @@
 import { test } from '../fixtures/apiFixture';
+import { purchaseFlowData } from '../data/purchaseFlowData';
 
+test.use({testData: purchaseFlowData});
 
 test(
   'customer can complete a purchase',

@@ -4,15 +4,8 @@ import {
   Order
 } from '../api/ordersApi';
 
-import {
-  TestContext,
-  getDynamicData,
-  setDynamicData
-} from '../context/testContext';
+import { TestContext, getDynamicData, setDynamicData, getStaticData } from '../context/testContext';
 
-import {
-  PurchaseFlowData
-} from '../data/purchaseFlowData';
 import { Scene } from './scene';
 
 export class PlaceOrderScene implements Scene{
@@ -21,8 +14,7 @@ export class PlaceOrderScene implements Scene{
 
   constructor(
     private readonly ordersApi: OrdersApi,
-
-    private readonly context: TestContext<PurchaseFlowData>
+    private readonly context: TestContext
   ) {}
 
   async run(): Promise<void> {
@@ -30,17 +22,36 @@ export class PlaceOrderScene implements Scene{
 
     const email = getDynamicData<string>(this.context, 'user.email');
 
-    const customer = this.context.staticData.order.customer;
+    const name = getStaticData<string>(this.context, 'order.customer.name');
 
-    const requestBody: CreateOrderRequest = {
-      customer: {
-        name: customer.name,
-        email,
-        address: customer.address,
-        city: customer.city,
-        postcode: customer.postcode
-      }
-    };
+    const address =
+      getStaticData<string>(
+        this.context,
+        'order.customer.address'
+      );
+
+    const city =
+      getStaticData<string>(
+        this.context,
+        'order.customer.city'
+      );
+
+    const postcode =
+      getStaticData<string>(
+        this.context,
+        'order.customer.postcode'
+      );
+
+    const requestBody:
+      CreateOrderRequest = {
+        customer: {
+          name,
+          email,
+          address,
+          city,
+          postcode
+        }
+      };
 
     const response = await this.ordersApi.createOrder(token, requestBody);
 

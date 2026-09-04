@@ -1,17 +1,7 @@
-import {
-  OrdersApi,
-  Order
-} from '../api/ordersApi';
+import { OrdersApi, Order } from '../api/ordersApi';
 
-import {
-  TestContext,
-  getDynamicData,
-  setDynamicData
-} from '../context/testContext';
+import { TestContext, getDynamicData, setDynamicData } from '../context/testContext';
 
-import {
-  PurchaseFlowData
-} from '../data/purchaseFlowData';
 import { Scene } from './scene';
 
 export class GetOrderScene implements Scene{
@@ -19,7 +9,7 @@ export class GetOrderScene implements Scene{
   static readonly api = 'orders';
   constructor(
     private readonly ordersApi: OrdersApi,
-    private readonly context: TestContext<PurchaseFlowData>
+    private readonly context: TestContext
   ) {}
 
   async run(): Promise<void> {

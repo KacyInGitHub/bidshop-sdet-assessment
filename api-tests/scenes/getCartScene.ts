@@ -1,17 +1,5 @@
-import {
-  CartApi,
-  Cart
-} from '../api/cartApi';
-
-import {
-  TestContext,
-  getDynamicData,
-  setDynamicData
-} from '../context/testContext';
-
-import {
-  PurchaseFlowData
-} from '../data/purchaseFlowData';
+import { CartApi, Cart } from '../api/cartApi';
+import { TestContext, getDynamicData, setDynamicData } from '../context/testContext';
 import { Scene } from './scene';
 
 export class GetCartScene implements Scene{
@@ -20,8 +8,7 @@ export class GetCartScene implements Scene{
 
   constructor( 
     private readonly cartApi: CartApi,
-    private readonly context:
-      TestContext<PurchaseFlowData>
+    private readonly context:TestContext
   ) {}
 
   async run(): Promise<void> {

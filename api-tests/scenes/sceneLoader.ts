@@ -4,7 +4,7 @@ import { Scene, SceneClass } from './scene';
 
 export type SceneRegistry = Record<string, Scene>;
 
-export function createScenes(sceneClasses: readonly SceneClass[], apiRegistry: ApiRegistry, context: TestContext<any>): SceneRegistry {
+export function createScenes(sceneClasses: readonly SceneClass[], apiRegistry: ApiRegistry, context: TestContext): SceneRegistry {
   const scenes: SceneRegistry = {};
 
   for (const SceneClass of sceneClasses) {
