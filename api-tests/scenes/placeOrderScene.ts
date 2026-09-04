@@ -6,7 +6,7 @@ import {
 
 import {
   PurchaseContext
-} from '../context/purchaseContext';
+} from '../context/testContext';
 
 export class PlaceOrderScene {
   constructor(

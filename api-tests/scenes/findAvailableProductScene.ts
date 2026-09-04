@@ -4,8 +4,8 @@ import {
 } from '../api/productsApi';
 
 import {
-  PurchaseContext
-} from '../context/purchaseContext';
+  TestContext
+} from '../context/testContext';
 
 export class FindAvailableProductScene {
   constructor(
@@ -13,7 +13,7 @@ export class FindAvailableProductScene {
   ) {}
 
   async findAvailableProduct(
-    context: PurchaseContext
+    context: TestContext
   ): Promise<void> {
 
     const response =

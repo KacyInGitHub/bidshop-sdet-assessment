@@ -5,8 +5,8 @@ import {
 } from '../api/cartApi';
 
 import {
-  PurchaseContext
-} from '../context/purchaseContext';
+  TestContext
+} from '../context/testContext';
 
 
 export class AddProductToCartScene {
@@ -14,9 +14,9 @@ export class AddProductToCartScene {
     private readonly cartApi: CartApi
   ) {}
 
-  async addProductToCart(
-    context: PurchaseContext
-  ): Promise<Cart> {
+  async run(
+    context: TestContext
+  ): Promise<void> {
 
     if (!context.user.token) {
       throw new Error(
@@ -30,15 +30,13 @@ export class AddProductToCartScene {
       );
     }
 
-    const requestBody: AddCartItemRequest = {
-      productId: context.product.id,
-      quantity: context.product.quantity
-    };
-
     const response =
       await this.cartApi.addItem(
         context.user.token,
-        requestBody
+        {
+          productId: context.product.id,
+          quantity: context.product.quantity
+        }
       );
 
     if (response.status() !== 201) {
@@ -47,6 +45,7 @@ export class AddProductToCartScene {
       );
     }
 
-    return await response.json() as Cart;
+    context.cart.latest =
+      await response.json() as Cart;
   }
 }

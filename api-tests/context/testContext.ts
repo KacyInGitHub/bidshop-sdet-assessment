@@ -1,8 +1,11 @@
-export interface PurchaseContext {
+import { Cart } from '../api/cartApi';
+import { Order } from '../api/ordersApi';
+import { Product } from '../api/productsApi';
+
+export interface TestContext {
   user: {
     name: string;
     password: string;
-
     email?: string;
     id?: string;
     token?: string;
@@ -10,11 +13,15 @@ export interface PurchaseContext {
 
   product: {
     quantity: number;
-
     id?: string;
     name?: string;
     price?: number;
     originalStock?: number;
+    latest?: Product;
+  };
+
+  cart: {
+    latest?: Cart;
   };
 
   order: {
@@ -25,11 +32,11 @@ export interface PurchaseContext {
       city: string;
       postcode: string;
     };
-
     id?: string;
+    latest?: Order;
   };
 }
 
-export function createPurchaseContext(data: PurchaseContext): PurchaseContext {
-    return structuredClone(data)
+export function createTestContext(data: TestContext): TestContext {
+  return structuredClone(data);
 }

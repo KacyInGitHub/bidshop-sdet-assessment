@@ -4,8 +4,8 @@ import {
 } from '../api/productsApi';
 
 import {
-  PurchaseContext
-} from '../context/purchaseContext';
+  TestContext
+} from '../context/testContext';
 
 export class GetProductScene {
   constructor(
@@ -13,7 +13,7 @@ export class GetProductScene {
   ) {}
 
   async getSelectedProduct(
-    context: PurchaseContext
+    context: TestContext
   ): Promise<Product> {
 
     if (!context.product.id) {

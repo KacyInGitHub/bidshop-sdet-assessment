@@ -4,8 +4,8 @@ import {
 } from '../api/cartApi';
 
 import {
-  PurchaseContext
-} from '../context/purchaseContext';
+  TestContext
+} from '../context/testContext';
 
 export class GetCartScene {
   constructor(
@@ -13,7 +13,7 @@ export class GetCartScene {
   ) {}
 
   async getCart(
-    context: PurchaseContext
+    context: TestContext
   ): Promise<Cart> {
 
     if (!context.user.token) {

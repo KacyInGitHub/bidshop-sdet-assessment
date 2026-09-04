@@ -1,11 +1,11 @@
 import { AuthApi, RegisterRequest, AuthResponse } from "../api/authApi";
-import { PurchaseContext } from "../context/purchaseContext";
+import { TestContext } from "../context/testContext";
 import { generateUniqueEmail } from "../factories/userFactory";
 
 export class RegisterUserScene {
     constructor( private readonly authApi: AuthApi) {}
 
-    async registerUser( context: PurchaseContext): Promise<AuthResponse> {
+    async registerUser( context: TestContext): Promise<AuthResponse> {
         
         const email = generateUniqueEmail();
         const requestBody: RegisterRequest = {

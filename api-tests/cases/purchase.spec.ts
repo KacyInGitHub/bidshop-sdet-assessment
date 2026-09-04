@@ -15,7 +15,7 @@ import { GetOrderScene } from '../scenes/getOrderScene';
 
 
 
-import { createPurchaseContext } from '../context/purchaseContext';
+import { createTestContext } from '../context/testContext';
 import { purchaseFlowData } from '../data/purchaseFlowData';
 import { marketConfig } from '../config/market';
 
@@ -24,7 +24,7 @@ test(
   'customer can complete a purchase',
   async ({ request }) => {
     // 0. init context
-    const context = createPurchaseContext(purchaseFlowData);
+    const context = createTestContext(purchaseFlowData);
 
     // 1.create a user to purchase
     const authApi = new AuthApi(request);

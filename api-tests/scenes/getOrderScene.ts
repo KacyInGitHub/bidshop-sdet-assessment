@@ -4,8 +4,8 @@ import {
 } from '../api/ordersApi';
 
 import {
-  PurchaseContext
-} from '../context/purchaseContext';
+  TestContext
+} from '../context/testContext';
 
 export class GetOrderScene {
   constructor(
@@ -13,7 +13,7 @@ export class GetOrderScene {
   ) {}
 
   async getOrder(
-    context: PurchaseContext
+    context: TestContext
   ): Promise<Order> {
 
     if (!context.user.token) {
