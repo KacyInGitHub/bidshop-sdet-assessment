@@ -1,6 +1,26 @@
-import { TestContext } from '../context/testContext';
+export interface PurchaseFlowData {
+  user: {
+    name: string;
+    password: string;
+  };
 
-export const purchaseFlowData: TestContext = {
+  product: {
+    quantity: number;
+  };
+
+  order: {
+    customer: {
+      name: string;
+      address: string;
+      city: string;
+      postcode: string;
+    };
+  };
+}
+
+export const purchaseFlowData:
+  PurchaseFlowData = {
+
   user: {
     name: 'E2E Test User',
     password: 'Password123!'
@@ -9,8 +29,6 @@ export const purchaseFlowData: TestContext = {
   product: {
     quantity: 2
   },
-
-  cart: {},
 
   order: {
     customer: {

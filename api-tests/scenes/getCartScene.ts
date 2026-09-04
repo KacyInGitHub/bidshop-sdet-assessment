@@ -4,26 +4,26 @@ import {
 } from '../api/cartApi';
 
 import {
-  TestContext
+  TestContext,
+  getDynamicData,
+  setDynamicData
 } from '../context/testContext';
 
+import {
+  PurchaseFlowData
+} from '../data/purchaseFlowData';
+
 export class GetCartScene {
-  constructor(
+  constructor( 
     private readonly cartApi: CartApi,
-    private readonly context: TestContext
+    private readonly context:
+      TestContext<PurchaseFlowData>
   ) {}
 
   async run(): Promise<void> {
-    const token = this.context.user.token;
+    const token = getDynamicData<string>(this.context, 'user.token');
 
-    if (!token) {
-      throw new Error(
-        'User token is missing from test context'
-      );
-    }
-
-    const response =
-      await this.cartApi.getCart(token);
+    const response = await this.cartApi.getCart(token);
 
     if (response.status() !== 200) {
       throw new Error(
@@ -31,7 +31,8 @@ export class GetCartScene {
       );
     }
 
-    this.context.cart.latest =
-      await response.json() as Cart;
+    const cart = await response.json() as Cart;
+
+    setDynamicData(this.context, 'cart.latest', cart);
   }
 }

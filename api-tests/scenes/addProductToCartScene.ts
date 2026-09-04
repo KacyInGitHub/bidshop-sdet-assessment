@@ -5,39 +5,36 @@ import {
 } from '../api/cartApi';
 
 import {
-  TestContext
+  Product
+} from '../api/productsApi';
+
+import {
+  TestContext,
+  getDynamicData,
+  setDynamicData
 } from '../context/testContext';
 
+import {
+  PurchaseFlowData
+} from '../data/purchaseFlowData';
 
 export class AddProductToCartScene {
   constructor(
     private readonly cartApi: CartApi,
-    private readonly context: TestContext
+    private readonly context: TestContext<PurchaseFlowData>
   ) {}
 
   async run(): Promise<void> {
-    if (!this.context.user.token) {
-      throw new Error(
-        'User token is missing from test context'
-      );
-    }
+    const token = getDynamicData<string>(this.context, 'user.token');
 
-    if (!this.context.product.id) {
-      throw new Error(
-        'Product ID is missing from test context'
-      );
-    }
+    const product = getDynamicData<Product>(this.context, 'product.selected');
 
     const requestBody: AddCartItemRequest = {
-      productId: this.context.product.id,
-      quantity: this.context.product.quantity
+      productId: product.id,
+      quantity: this.context.staticData.product.quantity
     };
 
-    const response =
-      await this.cartApi.addItem(
-        this.context.user.token,
-        requestBody
-      );
+    const response = await this.cartApi.addItem(token, requestBody);
 
     if (response.status() !== 201) {
       throw new Error(
@@ -45,7 +42,8 @@ export class AddProductToCartScene {
       );
     }
 
-    this.context.cart.latest =
-      await response.json() as Cart;
+    const cart = await response.json() as Cart;
+
+    setDynamicData(this.context, 'cart.latest', cart);
   }
 }

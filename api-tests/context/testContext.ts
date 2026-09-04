@@ -1,42 +1,47 @@
-import { Cart } from '../api/cartApi';
-import { Order } from '../api/ordersApi';
-import { Product } from '../api/productsApi';
+export type DeepReadonly<T> =
+  T extends (...args: any[]) => any
+    ? T
+    : T extends object
+      ? {
+          readonly [K in keyof T]:
+            DeepReadonly<T[K]>;
+        }
+      : T;
 
-export interface TestContext {
-  user: {
-    name: string;
-    password: string;
-    email?: string;
-    id?: string;
-    token?: string;
-  };
+export interface TestContext<TStaticData = unknown> {
+  readonly staticData: DeepReadonly<TStaticData>;
 
-  product: {
-    quantity: number;
-    id?: string;
-    name?: string;
-    price?: number;
-    originalStock?: number;
-    latest?: Product;
-  };
+  dynamicData: Record<string, unknown>;
+}
 
-  cart: {
-    latest?: Cart;
-  };
-
-  order: {
-    customer: {
-      name: string;
-      email?: string;
-      address: string;
-      city: string;
-      postcode: string;
-    };
-    id?: string;
-    latest?: Order;
+export function createTestContext<TStaticData>(
+  staticData: TStaticData
+): TestContext<TStaticData> {
+  return {
+    staticData: structuredClone(staticData) as DeepReadonly<TStaticData>,
+    dynamicData: {}
   };
 }
 
-export function createTestContext(data: TestContext): TestContext {
-  return structuredClone(data);
+export function setDynamicData<T>(
+  context: TestContext,
+  key: string,
+  value: T
+): void {
+  context.dynamicData[key] = value;
+}
+
+export function getDynamicData<T>(
+  context: TestContext,
+  key: string
+): T {
+  const value = context.dynamicData[key];
+
+  if (value === undefined) {
+    throw new Error(
+      `Dynamic data "${key}" is missing`
+    );
+  }
+
+  return value as T;
 }

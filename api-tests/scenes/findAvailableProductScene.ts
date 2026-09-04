@@ -4,21 +4,23 @@ import {
 } from '../api/productsApi';
 
 import {
-  TestContext
+  TestContext,
+  setDynamicData
 } from '../context/testContext';
+
+import {
+  PurchaseFlowData
+} from '../data/purchaseFlowData';
 
 export class FindAvailableProductScene {
   constructor(
     private readonly productsApi: ProductsApi,
-    private readonly context: TestContext
+
+    private readonly context: TestContext<PurchaseFlowData>
   ) {}
 
   async run(): Promise<void> {
-
-    const response =
-      await this.productsApi.getProducts({
-        inStock: true
-      });
+    const response = await this.productsApi.getProducts({ inStock: true });
 
     if (response.status() !== 200) {
       throw new Error(
@@ -26,32 +28,18 @@ export class FindAvailableProductScene {
       );
     }
 
-    const body =
-      await response.json() as ProductList;
+    const body = await response.json() as ProductList;
 
-    const product =
-      body.items.find(
-        item =>
-          item.stock >=
-          this.context.product.quantity
-      );
+    const quantity = this.context.staticData.product.quantity;
+
+    const product = body.items.find(item => item.stock >= quantity);
 
     if (!product) {
       throw new Error(
-        `No product has enough stock for quantity ${this.context.product.quantity}`
+        `No product has enough stock for quantity ${quantity}`
       );
     }
 
-    this.context.product.id =
-      product.id;
-
-    this.context.product.name =
-      product.name;
-
-    this.context.product.price =
-      product.price;
-
-    this.context.product.originalStock =
-      product.stock;
+    setDynamicData(this.context, 'product.selected', product);
   }
 }

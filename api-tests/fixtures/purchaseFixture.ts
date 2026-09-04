@@ -23,10 +23,13 @@ import { PlaceOrderScene } from '../scenes/placeOrderScene';
 import { GetCartScene } from '../scenes/getCartScene';
 import { GetProductScene } from '../scenes/getProductScene';
 import { GetOrderScene } from '../scenes/getOrderScene';
+import { VerifyRegisteredUserScene } from '../scenes/verifyRegisteredUserScene';
+
+import { PurchaseFlowData } from '../data/purchaseFlowData';
 
 
 type PurchaseFixture = {
-  testContext: TestContext;
+  testContext: TestContext<PurchaseFlowData>;
 
   registerUser: RegisterUserScene;
 
@@ -41,6 +44,8 @@ type PurchaseFixture = {
   getProduct: GetProductScene;
 
   getOrder: GetOrderScene;
+
+  verifyRegisteredUser: VerifyRegisteredUserScene;
 };
 
 
@@ -95,6 +100,9 @@ export const test =
       const orderApi = new OrdersApi(request);
 
       await use( new GetOrderScene(orderApi, testContext));
-    }
+    },
 
+    verifyRegisteredUser: async ({ testContext }, use) => {
+      await use( new VerifyRegisteredUserScene( testContext));
+    },
   });

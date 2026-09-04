@@ -4,39 +4,25 @@ import {
 } from '../api/ordersApi';
 
 import {
-  TestContext
+  TestContext,
+  getDynamicData,
+  setDynamicData
 } from '../context/testContext';
+
+import {
+  PurchaseFlowData
+} from '../data/purchaseFlowData';
 
 export class GetOrderScene {
   constructor(
     private readonly ordersApi: OrdersApi,
-    private readonly context: TestContext
+    private readonly context: TestContext<PurchaseFlowData>
   ) {}
 
   async run(): Promise<void> {
-    const token =
-      this.context.user.token;
-
-    const orderId =
-      this.context.order.id;
-
-    if (!token) {
-      throw new Error(
-        'User token is missing from test context'
-      );
-    }
-
-    if (!orderId) {
-      throw new Error(
-        'Order ID is missing from test context'
-      );
-    }
-
-    const response =
-      await this.ordersApi.getOrderById(
-        token,
-        orderId
-      );
+    const token = getDynamicData<string>(this.context, 'user.token');
+    const orderId = getDynamicData<string>(this.context, 'order.id');
+    const response = await this.ordersApi.getOrderById(token, orderId);
 
     if (response.status() !== 200) {
       throw new Error(
@@ -44,7 +30,8 @@ export class GetOrderScene {
       );
     }
 
-    this.context.order.latest =
-      await response.json() as Order;
+    const order = await response.json() as Order;
+
+    setDynamicData(this.context, 'order.latest', order);
   }
 }

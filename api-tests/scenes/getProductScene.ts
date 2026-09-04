@@ -4,29 +4,25 @@ import {
 } from '../api/productsApi';
 
 import {
-  TestContext
+  TestContext,
+  getDynamicData,
+  setDynamicData
 } from '../context/testContext';
+
+import {
+  PurchaseFlowData
+} from '../data/purchaseFlowData';
 
 export class GetProductScene {
   constructor(
     private readonly productsApi: ProductsApi,
-    private readonly context: TestContext
+    private readonly context: TestContext<PurchaseFlowData>
   ) {}
 
   async run(): Promise<void> {
-    const productId =
-      this.context.product.id;
+    const selectedProduct = getDynamicData<Product>(this.context, 'product.selected');
 
-    if (!productId) {
-      throw new Error(
-        'Product ID is missing from test context'
-      );
-    }
-
-    const response =
-      await this.productsApi.getProductById(
-        productId
-      );
+    const response = await this.productsApi.getProductById(selectedProduct.id);
 
     if (response.status() !== 200) {
       throw new Error(
@@ -34,7 +30,8 @@ export class GetProductScene {
       );
     }
 
-    this.context.product.latest =
-      await response.json() as Product;
+    const product = await response.json() as Product;
+
+    setDynamicData(this.context, 'product.latest', product);
   }
 }

@@ -5,37 +5,37 @@ import {
 } from '../api/authApi';
 
 import {
-  TestContext
+  TestContext,
+  setDynamicData
 } from '../context/testContext';
+
+import {
+  PurchaseFlowData
+} from '../data/purchaseFlowData';
 
 import {
   generateUniqueEmail
 } from '../factories/userFactory';
 
-
 export class RegisterUserScene {
   constructor(
     private readonly authApi: AuthApi,
-    private readonly context: TestContext
+
+    private readonly context: TestContext<PurchaseFlowData>
   ) {}
 
   async run(): Promise<void> {
+    const email = generateUniqueEmail();
 
-    const email =
-      generateUniqueEmail();
-
-    const requestBody: RegisterRequest = {
+    const requestBody:
+      RegisterRequest = {
       email,
-      password:
-        this.context.user.password,
-      name:
-        this.context.user.name
+      password: this.context.staticData.user.password,
+      name: this.context.staticData.user.name
     };
 
     const response =
-      await this.authApi.register(
-        requestBody
-      );
+      await this.authApi.register(requestBody);
 
     if (response.status() !== 201) {
       throw new Error(
@@ -46,16 +46,9 @@ export class RegisterUserScene {
     const body =
       await response.json() as AuthResponse;
 
-    this.context.user.email =
-      body.user.email;
-
-    this.context.user.id =
-      body.user.id;
-
-    this.context.user.name =
-      body.user.name;
-
-    this.context.user.token =
-      body.token;
+    setDynamicData(this.context, 'user.id', body.user.id);
+    setDynamicData(this.context, 'user.email', body.user.email);
+    setDynamicData(this.context, 'user.token', body.token);
+    setDynamicData(this.context, 'user.registered', body.user);
   }
 }
