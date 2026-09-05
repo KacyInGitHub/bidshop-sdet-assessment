@@ -53,7 +53,7 @@ export class VerifyCreatedOrderScene
     const expectedEmail =
       getDynamicData<string>(
         this.context,
-        'user.requestedEmail'
+        'user.email'
       );
 
 
