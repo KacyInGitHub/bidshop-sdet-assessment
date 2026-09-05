@@ -6,9 +6,14 @@ import { PlaceOrderScene } from './placeOrderScene';
 import { GetCartScene } from './getCartScene';
 import { GetProductScene } from './getProductScene';
 import { GetOrderScene } from './getOrderScene';
+import { RegisterAndBrowseProductsScene } from './registerAndBrowseProductScene';
 import { VerifyRegisteredUserScene } from './verifyRegisteredUserScene';
 import { VerifyAvailableProductScene } from './verifyAvailableProductScene'
-import { RegisterAndBrowseProductsScene } from './registerAndBrowseProductScene';
+import { VerifyCartScene } from './verifyCartScene';
+import { VerifyCreatedOrderScene } from './verifyCreatedOrderScene';
+import { VerifyCartClearedScene } from './verifyCartClearedScene';
+import { VerifyProductStockScene } from './verifyProductStockScene';
+import { VerifyOrderScene } from './verifyOrderScene';
 
 export const sceneClasses = [
   RegisterUserScene,
@@ -18,7 +23,12 @@ export const sceneClasses = [
   GetCartScene,
   GetProductScene,
   GetOrderScene,
+  RegisterAndBrowseProductsScene,
   VerifyRegisteredUserScene,
   VerifyAvailableProductScene,
-  RegisterAndBrowseProductsScene
+  VerifyCartScene,
+  VerifyCreatedOrderScene,
+  VerifyCartClearedScene,
+  VerifyProductStockScene,
+  VerifyOrderScene
 ] satisfies readonly SceneClass[];
