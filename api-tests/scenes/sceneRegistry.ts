@@ -7,6 +7,8 @@ import { GetCartScene } from './getCartScene';
 import { GetProductScene } from './getProductScene';
 import { GetOrderScene } from './getOrderScene';
 import { VerifyRegisteredUserScene } from './verifyRegisteredUserScene';
+import { VerifyAvailableProductScene } from './verifyAvailableProductScene'
+import { RegisterAndBrowseProductsScene } from './registerAndBrowseProductScene';
 
 export const sceneClasses = [
   RegisterUserScene,
@@ -16,5 +18,7 @@ export const sceneClasses = [
   GetCartScene,
   GetProductScene,
   GetOrderScene,
-  VerifyRegisteredUserScene
+  VerifyRegisteredUserScene,
+  VerifyAvailableProductScene,
+  RegisterAndBrowseProductsScene
 ] satisfies readonly SceneClass[];

@@ -2,18 +2,22 @@ import { ProductsApi, ProductList } from '../api/productsApi';
 import { TestContext, setDynamicData, getStaticData } from '../context/testContext';
 import { Scene } from './scene';
 
+type FindAvailableProductApis = {
+  products: ProductsApi;
+};
+
 export class FindAvailableProductScene implements Scene{
   static readonly key = 'findAvailableProduct';
-  static readonly api = ['products'] as const;
+  static readonly apis = ['products'] as const;
 
   constructor(
-    private readonly productsApi: ProductsApi,
+    private readonly apis: FindAvailableProductApis,
 
     private readonly context: TestContext
   ) {}
 
   async run(): Promise<void> {
-    const response = await this.productsApi.getProducts({ inStock: true });
+    const response = await this.apis.products.getProducts({ inStock: true });
 
     if (response.status() !== 200) {
       throw new Error(

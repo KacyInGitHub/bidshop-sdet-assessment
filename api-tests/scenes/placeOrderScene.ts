@@ -8,12 +8,16 @@ import { TestContext, getDynamicData, setDynamicData, getStaticData } from '../c
 
 import { Scene } from './scene';
 
+type PlaceOrderApis = {
+  orders: OrdersApi;
+};
+
 export class PlaceOrderScene implements Scene{
   static readonly key = 'placeOrder';
-  static readonly api = ['orders'] as const;
+  static readonly apis = ['orders'] as const;
 
   constructor(
-    private readonly ordersApi: OrdersApi,
+    private readonly apis: PlaceOrderApis,
     private readonly context: TestContext
   ) {}
 
@@ -53,7 +57,7 @@ export class PlaceOrderScene implements Scene{
         }
       };
 
-    const response = await this.ordersApi.createOrder(token, requestBody);
+    const response = await this.apis.orders.createOrder(token, requestBody);
 
     if (response.status() !== 201) {
       throw new Error(

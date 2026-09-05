@@ -1,18 +1,45 @@
-import { AuthApi, RegisterRequest, AuthResponse } from '../api/authApi';
-import { TestContext,setDynamicData, getStaticData } from '../context/testContext';
-import { generateUniqueEmail } from '../factories/userFactory';
+import {
+  AuthApi,
+  RegisterRequest,
+  AuthResponse
+} from '../api/authApi';
+
+import {
+  TestContext,
+  setDynamicData,
+  getStaticData
+} from '../context/testContext';
+
+import {
+  generateUniqueEmail
+} from '../factories/userFactory';
+
 import { Scene } from './scene';
 
-export class RegisterUserScene implements Scene{
+
+type RegisterUserApis = {
+  auth: AuthApi;
+};
+
+
+export class RegisterUserScene
+  implements Scene {
+
   static readonly key = 'registerUser';
-  static readonly api = ['auth'] as const
+
+  static readonly apis = [
+    'auth'
+  ] as const;
+
 
   constructor(
-    private readonly authApi: AuthApi,
+    private readonly apis: RegisterUserApis,
     private readonly context: TestContext
   ) {}
 
+
   async run(): Promise<void> {
+
     const name =
       getStaticData<string>(
         this.context,
@@ -25,14 +52,16 @@ export class RegisterUserScene implements Scene{
         'user.password'
       );
 
-    const email = generateUniqueEmail();
+    const email =
+      generateUniqueEmail();
 
-    const requestBody:
-      RegisterRequest = {
-        email,
-        password,
-        name
-      };
+
+    const requestBody: RegisterRequest = {
+      email,
+      password,
+      name
+    };
+
 
     setDynamicData(
       this.context,
@@ -40,7 +69,12 @@ export class RegisterUserScene implements Scene{
       email
     );
 
-    const response = await this.authApi.register(requestBody);
+
+    const response =
+      await this.apis.auth.register(
+        requestBody
+      );
+
 
     if (response.status() !== 201) {
       throw new Error(
@@ -48,7 +82,10 @@ export class RegisterUserScene implements Scene{
       );
     }
 
-    const body = await response.json() as AuthResponse;
+
+    const body =
+      await response.json() as AuthResponse;
+
 
     setDynamicData(
       this.context,

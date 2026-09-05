@@ -36,13 +36,12 @@ export function getDynamicData<T>(
 }
 
 export function getStaticData<T>(
-  context: TestContext,
+  testContext: TestContext,
   path: string
 ): T {
   const parts = path.split('.');
 
-  let current: unknown =
-    context.staticData;
+  let current: unknown = testContext.staticData;
 
   for (const part of parts) {
     if (

@@ -20,5 +20,7 @@ test(
     await scenes.getProduct.run();
 
     await scenes.getOrder.run();
+
+    await scenes.registerAndBrowseProducts.run()
   }
 );

@@ -4,18 +4,22 @@ import { TestContext, getDynamicData, setDynamicData } from '../context/testCont
 
 import { Scene } from './scene';
 
+type GetOrderApis = {
+  orders: OrdersApi;
+};
+
 export class GetOrderScene implements Scene{
   static readonly key = 'getOrder';
-  static readonly api = ['orders'] as const;
+  static readonly apis = ['orders'] as const;
   constructor(
-    private readonly ordersApi: OrdersApi,
+    private readonly apis: GetOrderApis,
     private readonly context: TestContext
   ) {}
 
   async run(): Promise<void> {
     const token = getDynamicData<string>(this.context, 'user.token');
     const orderId = getDynamicData<string>(this.context, 'order.id');
-    const response = await this.ordersApi.getOrderById(token, orderId);
+    const response = await this.apis.orders.getOrderById(token, orderId);
 
     if (response.status() !== 200) {
       throw new Error(

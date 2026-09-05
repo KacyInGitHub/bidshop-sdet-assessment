@@ -3,12 +3,17 @@ import { Product } from '../api/productsApi';
 import {TestContext, getDynamicData, setDynamicData, getStaticData } from '../context/testContext';
 import { Scene } from './scene';
 
+type AddProductToCartApis = { 
+  cart: CartApi; 
+};
+
 export class AddProductToCartScene implements Scene{
   static readonly key = 'addProductToCart';
-  static readonly api = ['cart'] as const;
-  
+  static readonly apis = ['cart'] as const;
+
   constructor(
-    private readonly cartApi: CartApi,
+    // private readonly cartApi: CartApi,
+    private readonly apis: AddProductToCartApis,
     private readonly context: TestContext
   ) {}
 
@@ -22,7 +27,7 @@ export class AddProductToCartScene implements Scene{
       quantity: getStaticData<number>(this.context, 'product.quantity')
     };
 
-    const response = await this.cartApi.addItem(token, requestBody);
+    const response = await this.apis.cart.addItem(token, requestBody);
 
     if (response.status() !== 201) {
       throw new Error(

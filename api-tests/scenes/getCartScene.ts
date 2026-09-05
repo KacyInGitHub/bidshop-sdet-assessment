@@ -2,19 +2,23 @@ import { CartApi, Cart } from '../api/cartApi';
 import { TestContext, getDynamicData, setDynamicData } from '../context/testContext';
 import { Scene } from './scene';
 
+type GetCartApis = {
+  cart: CartApi;
+};
+
 export class GetCartScene implements Scene{
   static readonly key = 'getCart';
-  static readonly api = ['cart'] as const;
+  static readonly apis = ['cart'] as const;
 
   constructor( 
-    private readonly cartApi: CartApi,
+    private readonly apis: GetCartApis,
     private readonly context:TestContext
   ) {}
 
   async run(): Promise<void> {
     const token = getDynamicData<string>(this.context, 'user.token');
 
-    const response = await this.cartApi.getCart(token);
+    const response = await this.apis.cart.getCart(token);
 
     if (response.status() !== 200) {
       throw new Error(

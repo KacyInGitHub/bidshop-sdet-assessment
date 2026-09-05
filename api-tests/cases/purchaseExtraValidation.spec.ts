@@ -8,10 +8,10 @@ test(
   async ({ scenes }) => {
 
     await scenes.registerUser.run();
-
     await scenes.verifyRegisteredUser.run();
 
     await scenes.findAvailableProduct.run();
+    await scenes.verifyAvailableProduct.run();
 
     await scenes.addProductToCart.run();
 
