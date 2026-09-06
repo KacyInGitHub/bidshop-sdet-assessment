@@ -15,12 +15,7 @@ class RegisterPage:
     def open(self) -> None:
         self.page.goto(self.PATH)
 
-    def register(
-        self,
-        name: str,
-        email: str,
-        password: str
-    ) -> None:
+    def register(self, name: str, email: str, password: str) -> None:
         self.name_input.fill(name)
         self.email_input.fill(email)
         self.password_input.fill(password)

@@ -1,7 +1,4 @@
-import {
-  APIRequestContext,
-  APIResponse
-} from '@playwright/test';
+import { APIRequestContext, APIResponse } from "@playwright/test";
 
 // ---------- Request Types ----------
 
@@ -32,33 +29,25 @@ export interface AuthResponse {
 // ---------- API ----------
 
 export class AuthApi {
-  constructor(
-    private readonly request: APIRequestContext
-  ) {}
+  constructor(private readonly request: APIRequestContext) {}
 
-  async register(
-    requestBody: RegisterRequest
-  ): Promise<APIResponse> {
-    return this.request.post('/auth/register', {
-      data: requestBody
+  async register(requestBody: RegisterRequest): Promise<APIResponse> {
+    return this.request.post("/auth/register", {
+      data: requestBody,
     });
   }
 
-  async login(
-    requestBody: LoginRequest
-  ): Promise<APIResponse> {
-    return this.request.post('/auth/login', {
-      data: requestBody
+  async login(requestBody: LoginRequest): Promise<APIResponse> {
+    return this.request.post("/auth/login", {
+      data: requestBody,
     });
   }
 
-  async getCurrentUser(
-    token: string
-  ): Promise<APIResponse> {
-    return this.request.get('/auth/me', {
+  async getCurrentUser(token: string): Promise<APIResponse> {
+    return this.request.get("/auth/me", {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 }

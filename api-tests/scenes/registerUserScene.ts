@@ -1,102 +1,54 @@
-import {
-  AuthApi,
-  RegisterRequest,
-  AuthResponse
-} from '../api/authApi';
+import { AuthApi, RegisterRequest, AuthResponse } from "../api/authApi";
 
 import {
   TestContext,
   setDynamicData,
-  getStaticData
-} from '../context/testContext';
+  getStaticData,
+} from "../context/testContext";
 
-import {
-  generateUniqueEmail
-} from '../factories/userFactory';
+import { generateUniqueEmail } from "../factories/userFactory";
 
-import { Scene } from './scene';
-
+import { Scene } from "./scene";
 
 type RegisterUserApis = {
   auth: AuthApi;
 };
 
+export class RegisterUserScene implements Scene {
+  static readonly key = "registerUser";
 
-export class RegisterUserScene
-  implements Scene {
-
-  static readonly key = 'registerUser';
-
-  static readonly apis = [
-    'auth'
-  ] as const;
-
+  static readonly apis = ["auth"] as const;
 
   constructor(
     private readonly apis: RegisterUserApis,
-    private readonly context: TestContext
+    private readonly context: TestContext,
   ) {}
 
-
   async run(): Promise<void> {
+    const name = getStaticData<string>(this.context, "user.name");
 
-    const name =
-      getStaticData<string>(
-        this.context,
-        'user.name'
-      );
+    const password = getStaticData<string>(this.context, "user.password");
 
-    const password =
-      getStaticData<string>(
-        this.context,
-        'user.password'
-      );
-
-    const email =
-      generateUniqueEmail();
-
+    const email = generateUniqueEmail();
 
     const requestBody: RegisterRequest = {
       email,
       password,
-      name
+      name,
     };
 
+    setDynamicData(this.context, "user.email", email);
 
-    setDynamicData(
-      this.context,
-      'user.email',
-      email
-    );
-
-
-    const response =
-      await this.apis.auth.register(
-        requestBody
-      );
-
+    const response = await this.apis.auth.register(requestBody);
 
     if (response.status() !== 201) {
-      throw new Error(
-        `User registration failed. Status: ${response.status()}`
-      );
+      throw new Error(`User registration failed. Status: ${response.status()}`);
     }
 
+    const body = (await response.json()) as AuthResponse;
 
-    const body =
-      await response.json() as AuthResponse;
+    setDynamicData(this.context, "user.token", body.token);
 
-
-    setDynamicData(
-      this.context,
-      'user.token',
-      body.token
-    );
-
-    setDynamicData(
-      this.context,
-      'user.registered',
-      body.user
-    );
+    setDynamicData(this.context, "user.registered", body.user);
   }
 }

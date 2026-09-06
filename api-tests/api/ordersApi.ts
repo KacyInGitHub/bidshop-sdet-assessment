@@ -1,7 +1,4 @@
-import {
-  APIRequestContext,
-  APIResponse
-} from '@playwright/test';
+import { APIRequestContext, APIResponse } from "@playwright/test";
 
 // ---------- Request Types ----------
 
@@ -40,48 +37,38 @@ export interface Order {
   subtotal: number;
   gst: number;
   total: number;
-  status: 'PENDING' | 'CONFIRMED';
+  status: "PENDING" | "CONFIRMED";
   createdAt: string;
 }
 
 export class OrdersApi {
-  constructor(
-    private readonly request: APIRequestContext
-  ) {}
+  constructor(private readonly request: APIRequestContext) {}
 
   async createOrder(
     token: string,
-    requestBody: CreateOrderRequest
+    requestBody: CreateOrderRequest,
   ): Promise<APIResponse> {
-    return this.request.post('/orders', {
+    return this.request.post("/orders", {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      data: requestBody
+      data: requestBody,
     });
   }
 
-  async getOrders(
-    token: string
-  ): Promise<APIResponse> {
-    return this.request.get('/orders', {
+  async getOrders(token: string): Promise<APIResponse> {
+    return this.request.get("/orders", {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 
-  async getOrderById(
-    token: string,
-    orderId: string
-  ): Promise<APIResponse> {
-    return this.request.get(
-      `/orders/${orderId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
+  async getOrderById(token: string, orderId: string): Promise<APIResponse> {
+    return this.request.get(`/orders/${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 }

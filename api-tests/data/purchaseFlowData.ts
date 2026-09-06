@@ -18,24 +18,22 @@ export interface PurchaseFlowData {
   };
 }
 
-export const purchaseFlowData:
-  PurchaseFlowData = {
-
+export const purchaseFlowData: PurchaseFlowData = {
   user: {
-    name: 'E2E Test User',
-    password: 'Password123!'
+    name: "E2E Test User",
+    password: "Password123!",
   },
 
   product: {
-    quantity: 2
+    quantity: 2,
   },
 
   order: {
     customer: {
-      name: 'E2E Test Customer',
-      address: '1 Queen Street',
-      city: 'Auckland',
-      postcode: '1010'
-    }
-  }
+      name: "E2E Test Customer",
+      address: "1 Queen Street",
+      city: "Auckland",
+      postcode: "1010",
+    },
+  },
 };

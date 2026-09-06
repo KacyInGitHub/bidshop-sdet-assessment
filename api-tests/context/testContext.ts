@@ -3,61 +3,42 @@ export interface TestContext {
   dynamicData: Record<string, unknown>;
 }
 
-export function createTestContext(
-  staticData: unknown
-): TestContext {
+export function createTestContext(staticData: unknown): TestContext {
   return {
     staticData: structuredClone(staticData),
-    dynamicData: {}
+    dynamicData: {},
   };
 }
 
 export function setDynamicData<T>(
   context: TestContext,
   key: string,
-  value: T
+  value: T,
 ): void {
   context.dynamicData[key] = value;
 }
 
-export function getDynamicData<T>(
-  context: TestContext,
-  key: string
-): T {
+export function getDynamicData<T>(context: TestContext, key: string): T {
   const value = context.dynamicData[key];
 
   if (value === undefined) {
-    throw new Error(
-      `Dynamic data "${key}" is missing`
-    );
+    throw new Error(`Dynamic data "${key}" is missing`);
   }
 
   return value as T;
 }
 
-export function getStaticData<T>(
-  testContext: TestContext,
-  path: string
-): T {
-  const parts = path.split('.');
+export function getStaticData<T>(testContext: TestContext, path: string): T {
+  const parts = path.split(".");
 
   let current: unknown = testContext.staticData;
 
   for (const part of parts) {
-    if (
-      typeof current !== 'object' ||
-      current === null ||
-      !(part in current)
-    ) {
-      throw new Error(
-        `Static data "${path}" is missing`
-      );
+    if (typeof current !== "object" || current === null || !(part in current)) {
+      throw new Error(`Static data "${path}" is missing`);
     }
 
-    current =
-      (
-        current as Record<string, unknown>
-      )[part];
+    current = (current as Record<string, unknown>)[part];
   }
 
   return current as T;

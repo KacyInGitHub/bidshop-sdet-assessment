@@ -5,12 +5,9 @@ from playwright.sync_api import expect
 from pages.products_page import ProductsPage
 from utils.config_loader import load_json
 
-
 ROOT_DIR = Path(__file__).parent.parent
 
-PRODUCT_DATA = load_json(
-    ROOT_DIR / "data" / "product_data.json"
-)
+PRODUCT_DATA = load_json(ROOT_DIR / "data" / "product_data.json")
 
 
 def test_user_can_search_products(page):
@@ -19,19 +16,13 @@ def test_user_can_search_products(page):
     search_data = PRODUCT_DATA["search"]
 
     products_page.open()
-    products_page.search(
-        search_data["keyword"]
-    )
+    products_page.search(search_data["keyword"])
 
     expect(
-        products_page.get_product_name(
-            search_data["expected_product"]
-        )
+        products_page.get_product_name(search_data["expected_product"])
     ).to_be_visible()
 
-    expect(
-        products_page.get_filter_summary()
-    ).to_have_text("1 product")
+    expect(products_page.get_filter_summary()).to_have_text("1 product")
 
 
 def test_user_can_filter_products_by_category(page):
@@ -49,7 +40,4 @@ def test_user_can_filter_products_by_category(page):
     categories = category_labels.all_inner_texts()
 
     assert categories
-    assert all(
-        item.strip().lower() == category.lower()
-        for item in categories
-    )
+    assert all(item.strip().lower() == category.lower() for item in categories)

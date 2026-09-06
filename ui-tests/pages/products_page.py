@@ -28,7 +28,7 @@ class ProductsPage:
 
     def get_filter_summary(self) -> Locator:
         return self.filter_summary
-    
+
     def get_product_cards(self) -> Locator:
         return self.page.locator('[data-testid^="product-card-"]')
 

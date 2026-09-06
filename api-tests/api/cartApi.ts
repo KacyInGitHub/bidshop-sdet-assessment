@@ -1,8 +1,4 @@
-import {
-  APIRequestContext,
-  APIResponse
-} from '@playwright/test';
-
+import { APIRequestContext, APIResponse } from "@playwright/test";
 
 // ---------- Request Types ----------
 
@@ -14,7 +10,6 @@ export interface AddCartItemRequest {
 export interface UpdateCartItemRequest {
   quantity: number;
 }
-
 
 // ---------- Response Types ----------
 
@@ -37,73 +32,57 @@ export interface Cart {
   updatedAt: string;
 }
 
-
 // ---------- API ----------
 
 export class CartApi {
-  constructor(
-    private readonly request: APIRequestContext
-  ) {}
+  constructor(private readonly request: APIRequestContext) {}
 
-  async getCart(
-    token: string
-  ): Promise<APIResponse> {
-    return this.request.get('/cart', {
+  async getCart(token: string): Promise<APIResponse> {
+    return this.request.get("/cart", {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 
-  async clearCart(
-    token: string
-  ): Promise<APIResponse> {
-    return this.request.delete('/cart', {
+  async clearCart(token: string): Promise<APIResponse> {
+    return this.request.delete("/cart", {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 
   async addItem(
     token: string,
-    requestBody: AddCartItemRequest
+    requestBody: AddCartItemRequest,
   ): Promise<APIResponse> {
-    return this.request.post('/cart/items', {
+    return this.request.post("/cart/items", {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      data: requestBody
+      data: requestBody,
     });
   }
 
   async updateItem(
     token: string,
     productId: string,
-    requestBody: UpdateCartItemRequest
+    requestBody: UpdateCartItemRequest,
   ): Promise<APIResponse> {
-    return this.request.patch(
-      `/cart/items/${productId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        data: requestBody
-      }
-    );
+    return this.request.patch(`/cart/items/${productId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: requestBody,
+    });
   }
 
-  async removeItem(
-    token: string,
-    productId: string
-  ): Promise<APIResponse> {
-    return this.request.delete(
-      `/cart/items/${productId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
+  async removeItem(token: string, productId: string): Promise<APIResponse> {
+    return this.request.delete(`/cart/items/${productId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 }

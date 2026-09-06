@@ -1,11 +1,11 @@
-import { test as base } from '@playwright/test';
+import { test as base } from "@playwright/test";
 
-import { TestContext, createTestContext } from '../context/testContext';
+import { TestContext, createTestContext } from "../context/testContext";
 
-import { createApiRegistry } from '../api/apiRegistry';
-import { createScenes, SceneRegistry } from '../scenes/sceneLoader';
+import { createApiRegistry } from "../api/apiRegistry";
+import { createScenes, SceneRegistry } from "../scenes/sceneLoader";
 
-import { sceneClasses } from '../scenes/sceneRegistry';
+import { sceneClasses } from "../scenes/sceneRegistry";
 
 type ApiFixture = {
   testData: unknown;
@@ -13,19 +13,17 @@ type ApiFixture = {
   scenes: SceneRegistry;
 };
 
-export const test =
-  base.extend<ApiFixture>({
-    testData: [{},{option: true}],
+export const test = base.extend<ApiFixture>({
+  testData: [{}, { option: true }],
 
-    testContext: async ({ testData }, use) => {
-      const testContext = createTestContext(testData);
-      await use(testContext);
-    },
+  testContext: async ({ testData }, use) => {
+    const testContext = createTestContext(testData);
+    await use(testContext);
+  },
 
-    scenes: async ({ request, testContext }, use) => {
-      const apiRegistry = createApiRegistry(request);
-      const scenes = createScenes(sceneClasses, apiRegistry, testContext);
-      await use(scenes);
-    }
-
-  });
+  scenes: async ({ request, testContext }, use) => {
+    const apiRegistry = createApiRegistry(request);
+    const scenes = createScenes(sceneClasses, apiRegistry, testContext);
+    await use(scenes);
+  },
+});
