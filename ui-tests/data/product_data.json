@@ -1,0 +1,9 @@
+{
+  "search": {
+    "keyword": "Chicken",
+    "expected_product": "Free-Range Chicken Breast"
+  },
+  "category_filter": {
+    "category": "Seafood"
+  }
+}
