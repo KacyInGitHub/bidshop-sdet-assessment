@@ -1,8 +1,17 @@
 export interface TestContext {
+  // Predefined test data provided by the case. It should remain unchanged during execution.
   readonly staticData: unknown;
+
+  // Runtime data produced and shared between Scenes during the test flow.
   dynamicData: Record<string, unknown>;
 }
 
+/**
+ * Creates an isolated Context for each test.
+ *
+ * Static data is deep cloned to avoid modifying the original case data,
+ * while dynamic data starts empty and is populated during execution.
+ */
 export function createTestContext(staticData: unknown): TestContext {
   return {
     staticData: structuredClone(staticData),

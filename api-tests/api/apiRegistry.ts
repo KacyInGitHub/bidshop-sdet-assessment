@@ -14,4 +14,5 @@ export function createApiRegistry(request: APIRequestContext) {
   };
 }
 
+// Derive the registry type from the factory function to avoid maintaining the structure separately.
 export type ApiRegistry = ReturnType<typeof createApiRegistry>;

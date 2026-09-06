@@ -17,7 +17,6 @@ export class AddProductToCartScene implements Scene {
   static readonly apis = ["cart"] as const;
 
   constructor(
-    // private readonly cartApi: CartApi,
     private readonly apis: AddProductToCartApis,
     private readonly context: TestContext,
   ) {}

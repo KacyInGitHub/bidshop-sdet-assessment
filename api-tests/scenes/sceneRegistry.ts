@@ -15,6 +15,13 @@ import { VerifyCartClearedScene } from "./verifyCartClearedScene";
 import { VerifyProductStockScene } from "./verifyProductStockScene";
 import { VerifyOrderScene } from "./verifyOrderScene";
 
+/**
+ * Central registry of Scene classes available to the test framework.
+ *
+ * The Scene Loader uses this registry to create Scene instances and resolve
+ * their declared API dependencies. Adding a new Scene only requires registering
+ * its class here; the fixture does not need to know about the concrete Scene.
+ */
 export const sceneClasses = [
   RegisterUserScene,
   FindAvailableProductScene,
