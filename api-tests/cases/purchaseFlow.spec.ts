@@ -17,10 +17,6 @@ export function registerPurchaseCase(): void {
       await scenes.getCart.run();
 
       await scenes.getOrder.run();
-
-      await scenes.getProduct.run();
-
-      await scenes.registerAndBrowseProducts.run();
     });
   });
 }

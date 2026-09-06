@@ -1,6 +1,6 @@
 import { test } from "../fixtures/apiFixture";
-import { registerPurchaseCase } from "../cases/purchase.spec";
-import { purchaseExtraValidationCase } from "../cases/purchaseExtraValidation.spec";
+import { registerPurchaseCase } from "../cases/purchaseFlow.spec";
+import { purchaseExtraValidationCase } from "../cases/purchaseFlowValidation.spec";
 
 // Available modes: 'default', 'parallel', 'serial'.
 // Use 'serial' because the Bidshop backend uses shared in-memory state,

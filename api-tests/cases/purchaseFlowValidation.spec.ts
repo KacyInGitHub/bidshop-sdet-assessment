@@ -23,11 +23,11 @@ export function purchaseExtraValidationCase(): void {
       await scenes.getCart.run();
       await scenes.verifyCartCleared.run();
 
-      await scenes.getProduct.run();
-      await scenes.verifyProductStock.run();
-
       await scenes.getOrder.run();
       await scenes.verifyOrder.run();
+
+      await scenes.getProduct.run();
+      await scenes.verifyProductStock.run();
     });
   });
 }
