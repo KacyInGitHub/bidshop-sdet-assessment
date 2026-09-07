@@ -12,6 +12,8 @@ I chose Playwright with TypeScript for API testing because the Bidshop backend i
 
 The API framework uses a layered design:
 
+<img src="docs/api-framework.svg" alt="API Framework Architecture" width="450">
+
 - **API layer** encapsulates HTTP endpoints and request/response contracts.
 - **Scenes** represent reusable business actions, queries, and verification steps. A Scene can use one or multiple API domains.
 - **Cases** compose Scenes into business test flows and bind their own test data.
@@ -21,7 +23,7 @@ The API framework uses a layered design:
 - **Configuration** manages environment-specific settings and shared business rules, such as the API base URL and NZ GST rate.
 - **Fixtures** handle dependency wiring and test lifecycle.
 
-The main API test covers the core purchase flow from user registration and product selection through cart, order placement, stock validation, and persisted order verification.
+The main API flow covers the core purchase flow from user registration and product selection through cart, order placement, stock validation, and persisted order verification.
 
 Playwright's test runner provides execution, test isolation, and HTML reporting.
 
@@ -30,6 +32,8 @@ Playwright's test runner provides execution, test isolation, and HTML reporting.
 I chose Playwright with Python for UI testing because browser-level tests are less coupled to the frontend implementation language, and Python allows me to build and maintain the UI automation efficiently.
 
 The UI framework intentionally uses a lightweight Page Object design:
+
+<img src="docs/ui-framework.svg" alt="UI Framework Architecture" width="450">
 
 - **Page Objects** encapsulate page-specific locators and browser interactions.
 - **Components** encapsulate reusable UI elements shared across pages.
@@ -55,11 +59,19 @@ cd api-tests
 npm install
 ```
 
-Run the API suite:
+Run the API tests:
 
 ```bash
 npx playwright test
 ```
+
+The default API environment is `local`. A different environment can be selected using `TEST_ENV`:
+
+```bash
+TEST_ENV=local npx playwright test
+```
+
+The API base URL can also be overridden using `API_BASE_URL`.
 
 Open the HTML report:
 
@@ -84,7 +96,7 @@ pip install -r requirements.txt
 playwright install chromium
 ```
 
-Run the UI suite using the default local environment:
+Run the UI tests using the default local environment:
 
 ```bash
 pytest
@@ -104,8 +116,6 @@ pytest --env=local
 
 ## Trade-offs and Future Improvements
 
-The solution intentionally focuses on a small number of representative tests and framework structure rather than maximising test coverage.
-
 ### Shared Backend State and Parallel Execution
 
 The Bidshop backend stores data in shared in-memory state. Tests that modify the same product can therefore interfere with each other's stock validation when executed concurrently.
@@ -116,7 +126,7 @@ In a larger test environment, I would introduce isolated test data per worker, c
 
 ### CI Integration
 
-Both suites currently run locally.
+Both test projects currently run locally.
 
 A next step would be to integrate them into CI, including automated execution, test reports, and failure artifacts such as screenshots and traces for UI failures.
 
@@ -126,4 +136,4 @@ During testing, I identified a discrepancy between the documented business rule 
 
 The API documentation describes GST as **15%**, while the current backend implementation calculates cart GST at **12.5%**.
 
-I kept the expected business rule at 15% rather than changing the test configuration to match the current implementation. The strict GST assertion is not included in the main passing workflow so that the known application issue does not make the assessment suite permanently fail.
+I kept the expected business rule at 15% rather than changing the test configuration to match the current implementation. The discrepancy is documented as a known application issue, while the strict GST assertion is excluded from the main passing workflow.
