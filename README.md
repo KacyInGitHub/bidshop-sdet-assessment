@@ -21,7 +21,7 @@ The API framework uses a layered design:
 
 The main API test covers the core purchase flow from user registration and product selection through cart, order placement, stock validation, and persisted order verification.
 
-Playwright's test runner provides execution, isolation at the test level, and HTML reporting.
+Playwright's test runner provides execution, test isolation, and HTML reporting.
 
 ### UI Testing — Playwright + Python
 
@@ -29,20 +29,23 @@ I chose Playwright with Python for UI testing because browser-level tests are le
 
 The UI framework intentionally uses a lightweight Page Object design:
 
-- **Cases** describe user-visible test scenarios and contain the business assertions.
+- **Cases** describe user-visible test scenarios and contain the business assertions using Playwright's `expect`.
 - **Page Objects** encapsulate page-specific locators and browser interactions.
 - **Components** encapsulate reusable UI elements shared across pages.
-- **Test data** is externalised into JSON files and kept separate from test logic.
-- **Configuration** is externalised from the tests, including the application base URL and default timeout.
+- **Test data** is externalised into JSON files and organised around the test scenarios that own it.
+- **Configuration** is externalised from the tests and supports environment-specific settings such as the application base URL and default Playwright timeout.
 - **Pytest fixtures** provide shared runtime configuration and test lifecycle support.
 
-The UI suite focuses on a small set of representative user interactions:
+The UI suite covers representative user journeys including:
 
 - User registration
 - Product search
 - Product filtering by category
+- End-to-end purchase flow from registration through cart and checkout to order confirmation
 
 Stable `data-testid` attributes are used where the application provides an explicit automation contract, while semantic role-based locators are used for appropriate user-visible content.
+
+The UI framework uses Playwright's auto-waiting and auto-retrying assertions rather than fixed delays. The configured default timeout defines the maximum waiting time for Playwright actions rather than a fixed wait.
 
 I intentionally kept the UI framework simpler than the API framework. API tests frequently compose multiple service interactions into business workflows, while UI tests are primarily concerned with user-visible behaviour and page interactions. Page Objects and reusable Components provide sufficient abstraction for the current UI scope without introducing unnecessary layers.
 
@@ -88,51 +91,78 @@ pip install -r requirements.txt
 playwright install chromium
 ```
 
-Run the UI suite:
+Run the UI suite using the default local environment:
 
 ```bash
 pytest
 ```
 
-The default application URL is configured in `config/settings.json`.
+The default environment is `local`, with its configuration stored in:
 
-It can be overridden at runtime using the `BASE_URL` environment variable:
+```text
+config/local.json
+```
+
+The environment can also be selected explicitly:
 
 ```bash
-BASE_URL=http://localhost:5173 pytest
+pytest --env=local
+```
+
+Additional environments can be supported by adding environment-specific configuration files, for example:
+
+```text
+config/
+├── local.json
+├── test.json
+└── staging.json
+```
+
+A different environment can then be selected at runtime:
+
+```bash
+pytest --env=test
+```
+
+The application base URL can also be overridden using the `BASE_URL` environment variable. This is useful for CI pipelines or temporary test deployments:
+
+```bash
+BASE_URL=http://localhost:5173 pytest --env=local
 ```
 
 ## Trade-offs and Future Improvements
 
 The solution intentionally focuses on a small number of representative tests and framework structure rather than maximising test coverage.
 
-### Shared backend state and parallel execution
+### Shared Backend State and Parallel Execution
 
 The Bidshop backend stores data in shared in-memory state. Tests that modify the same product can therefore interfere with each other's stock validation when executed concurrently.
 
-The API framework itself supports Playwright parallel workers, but the current application does not provide isolated test data per worker. For this assessment, the API suite is therefore intended to run with the default single-worker configuration.
+The API framework itself supports Playwright parallel execution, but the current application does not provide isolated test data per worker. The state-changing purchase cases are therefore grouped and executed serially to avoid cross-test interference.
 
 In a larger test environment, I would introduce isolated test data per worker, controlled test-data setup and cleanup, or independent backend instances before enabling parallel execution for state-changing scenarios.
 
-### API contract validation
+### API Contract Validation
 
 For this assessment, API response contracts are represented using TypeScript interfaces rather than runtime schema validation.
 
 With more time, I would add runtime schema validation for key API responses and expand negative, boundary, and error-handling coverage.
 
-### UI coverage
+### UI Coverage
 
-The UI suite deliberately covers only a few representative user interactions because the core purchase workflow is already exercised more deeply through the API suite.
+The UI suite includes a representative end-to-end purchase journey covering registration, product selection, cart, checkout, and order confirmation.
 
-With more time, I would extend UI coverage to critical authenticated journeys such as cart and checkout, while keeping detailed service-level validation in the API suite.
+Detailed service-level validation such as stock changes, persisted order state, and business calculations remains primarily in the API suite to avoid duplicating lower-level validation in UI tests.
 
-### CI integration
+With more time, I would extend UI coverage with negative and boundary scenarios, such as invalid registration data, empty cart behaviour, invalid delivery details, and checkout validation.
+
+### CI Integration
 
 Both suites currently run locally.
 
 A next step would be to integrate them into CI, including automated execution, test reports, and failure artifacts such as screenshots and traces for UI failures.
 
-### Known GST issue
+### Known GST Issue
 
 During testing, I identified a discrepancy between the documented business rule and the backend implementation.
 
