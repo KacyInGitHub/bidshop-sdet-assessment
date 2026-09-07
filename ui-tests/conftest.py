@@ -21,6 +21,12 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope="session")
 def settings(request):
+    """
+    Load the configuration for the selected test environment.
+
+    The --env option determines which JSON file is loaded.
+    For example, --env=local loads config/local.json.
+    """
     env = request.config.getoption("--env")
     config_path = CONFIG_DIR / f"{env}.json"
 

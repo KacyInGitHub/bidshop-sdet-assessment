@@ -29,9 +29,9 @@ I chose Playwright with Python for UI testing because browser-level tests are le
 
 The UI framework intentionally uses a lightweight Page Object design:
 
-- **Cases** describe user-visible test scenarios and contain the business assertions using Playwright's `expect`.
 - **Page Objects** encapsulate page-specific locators and browser interactions.
 - **Components** encapsulate reusable UI elements shared across pages.
+- **Cases** describe user-visible test scenarios and contain the business assertions using Playwright's `expect`.
 - **Test data** is externalised into JSON files and organised around the test scenarios that own it.
 - **Configuration** is externalised from the tests and supports environment-specific settings such as the application base URL and default Playwright timeout.
 - **Pytest fixtures** provide shared runtime configuration and test lifecycle support.
