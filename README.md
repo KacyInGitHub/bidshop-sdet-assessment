@@ -40,10 +40,6 @@ The UI framework intentionally uses a lightweight Page Object design:
 
 The UI automation covers user registration and an end-to-end purchase flow from product selection through cart and checkout to order confirmation.
 
-Stable `data-testid` attributes are used where the application provides an explicit automation contract, while semantic role-based locators are used for appropriate user-visible content.
-
-The UI framework uses Playwright's auto-waiting and auto-retrying assertions rather than fixed delays. The configured default timeout defines the maximum waiting time for Playwright actions rather than a fixed wait.
-
 I intentionally kept the UI framework simpler than the API framework. API tests frequently compose multiple service interactions into business workflows, while UI tests are primarily concerned with user-visible behaviour and page interactions. Page Objects and reusable Components provide sufficient abstraction for the current UI scope without introducing unnecessary layers.
 
 ## Install and Run
