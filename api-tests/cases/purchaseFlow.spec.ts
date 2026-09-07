@@ -1,7 +1,7 @@
 import { test } from "../fixtures/apiFixture";
 import { purchaseFlowData } from "../data/purchaseFlowData";
 
-export function registerPurchaseCase(): void {
+export function purchaseCase(): void {
   test.describe("Purchase Case", () => {
     test.use({ testData: purchaseFlowData });
 

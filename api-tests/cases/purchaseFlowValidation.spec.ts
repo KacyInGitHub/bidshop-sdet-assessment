@@ -1,11 +1,11 @@
 import { test } from "../fixtures/apiFixture";
 import { purchaseFlowData } from "../data/purchaseFlowData";
 
-export function purchaseExtraValidationCase(): void {
-  test.describe("Purchase ExtraValidation Case", () => {
+export function purchaseValidationCase(): void {
+  test.describe("Purchase Validation Case ", () => {
     test.use({ testData: purchaseFlowData });
 
-    test("customer can complete a purchase and add verify for each step", async ({
+    test("customer can complete a purchase and verify for each step", async ({
       scenes,
     }) => {
       await scenes.registerUser.run();
