@@ -1,0 +1,16 @@
+{
+  "user": {
+    "name": "E2E Purchase User",
+    "password": "Password123!"
+  },
+  "product": {
+    "keyword": "Chicken",
+    "name": "Free-Range Chicken Breast",
+    "quantity": 1
+  },
+  "delivery":{
+    "address": "Hastings Road",
+    "city": "Auckland",
+    "postcode": "0630"
+  }
+}

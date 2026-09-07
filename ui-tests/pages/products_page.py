@@ -20,9 +20,6 @@ class ProductsPage:
     def select_category(self, category: str) -> None:
         self.category_filter.select_option(label=category)
 
-    def get_product_card(self, product_id: str) -> Locator:
-        return self.page.get_by_test_id(f"product-card-{product_id}")
-
     def get_product_name(self, product_name: str) -> Locator:
         return self.page.get_by_role("heading", name=product_name, exact=True)
 
@@ -37,3 +34,15 @@ class ProductsPage:
 
     def get_category_labels(self, category: str) -> Locator:
         return self.get_product_cards().get_by_text(category, exact=True)
+
+    def get_product(self, product_name: str):
+        return self.page.get_by_text(product_name, exact=True)
+
+    def add_product_to_cart(self, product_name: str):
+        product_card = self.page.locator("[data-testid^='product-card-']").filter(
+            has_text=product_name
+        )
+
+        add_button = product_card.locator("[data-testid^='product-add-']")
+
+        add_button.click()

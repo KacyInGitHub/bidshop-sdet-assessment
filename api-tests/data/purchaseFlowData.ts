@@ -31,9 +31,9 @@ export const purchaseFlowData: PurchaseFlowData = {
   order: {
     customer: {
       name: "E2E Test Customer",
-      address: "1 Queen Street",
+      address: "Hastings Road",
       city: "Auckland",
-      postcode: "1010",
+      postcode: "0630",
     },
   },
 };

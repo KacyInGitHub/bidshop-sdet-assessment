@@ -13,3 +13,10 @@ class Navbar:
 
     def logout(self) -> None:
         self.logout_button.click()
+
+    @property
+    def cart_count(self):
+        return self.page.get_by_test_id("nav-cart-count")
+
+    def open_cart(self):
+        self.page.get_by_test_id("nav-cart").click()
