@@ -17,6 +17,8 @@ The API framework uses a layered design:
 - **Cases** compose Scenes into business test flows and bind their own test data.
 - **Suites** group Cases for execution.
 - **Context** manages static test data and runtime state within each test.
+- **Test data** is separated from test logic and organised around the business scenarios that use it.
+- **Configuration** manages environment-specific settings and shared business rules, such as the API base URL and NZ GST rate.
 - **Fixtures** handle dependency wiring and test lifecycle.
 
 The main API test covers the core purchase flow from user registration and product selection through cart, order placement, stock validation, and persisted order verification.
@@ -36,12 +38,7 @@ The UI framework intentionally uses a lightweight Page Object design:
 - **Configuration** is externalised from the tests and supports environment-specific settings such as the application base URL and default Playwright timeout.
 - **Pytest fixtures** provide shared runtime configuration and test lifecycle support.
 
-The UI suite covers representative user journeys including:
-
-- User registration
-- Product search
-- Product filtering by category
-- End-to-end purchase flow from registration through cart and checkout to order confirmation
+The UI automation covers user registration and an end-to-end purchase flow from product selection through cart and checkout to order confirmation.
 
 Stable `data-testid` attributes are used where the application provides an explicit automation contract, while semantic role-based locators are used for appropriate user-visible content.
 
@@ -107,27 +104,6 @@ The environment can also be selected explicitly:
 
 ```bash
 pytest --env=local
-```
-
-Additional environments can be supported by adding environment-specific configuration files, for example:
-
-```text
-config/
-├── local.json
-├── test.json
-└── staging.json
-```
-
-A different environment can then be selected at runtime:
-
-```bash
-pytest --env=test
-```
-
-The application base URL can also be overridden using the `BASE_URL` environment variable. This is useful for CI pipelines or temporary test deployments:
-
-```bash
-BASE_URL=http://localhost:5173 pytest --env=local
 ```
 
 ## Trade-offs and Future Improvements
