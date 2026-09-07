@@ -142,20 +142,6 @@ The API framework itself supports Playwright parallel execution, but the current
 
 In a larger test environment, I would introduce isolated test data per worker, controlled test-data setup and cleanup, or independent backend instances before enabling parallel execution for state-changing scenarios.
 
-### API Contract Validation
-
-For this assessment, API response contracts are represented using TypeScript interfaces rather than runtime schema validation.
-
-With more time, I would add runtime schema validation for key API responses and expand negative, boundary, and error-handling coverage.
-
-### UI Coverage
-
-The UI suite includes a representative end-to-end purchase journey covering registration, product selection, cart, checkout, and order confirmation.
-
-Detailed service-level validation such as stock changes, persisted order state, and business calculations remains primarily in the API suite to avoid duplicating lower-level validation in UI tests.
-
-With more time, I would extend UI coverage with negative and boundary scenarios, such as invalid registration data, empty cart behaviour, invalid delivery details, and checkout validation.
-
 ### CI Integration
 
 Both suites currently run locally.
