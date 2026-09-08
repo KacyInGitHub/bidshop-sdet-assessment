@@ -102,8 +102,6 @@ Run the UI tests using the default local environment:
 pytest
 ```
 
-An HTML test report is generated at: reports/report.html
-
 The default environment is `local`, with its configuration stored in:
 
 ```text
